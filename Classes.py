@@ -1,52 +1,66 @@
 import CONSTANTS
+import functions
+
 
 #Card Class
 class Card:
     #Attributes
-    def __init__(self,symbol,suit,value=None):
-        self.symbol = symbol
+    def __init__(self,rank,suit):
+        self.rank = rank
         self.suit = suit
-        self.value = value
-        #Check if cards are okay
-        if self.symbol not in CONSTANTS.SYMBOL_LIST:
-            raise Exception("Symbols are based on the letters/numbers on the top right of real cards.")
-        elif self.suit not in CONSTANTS.SUIT_LIST:
-            raise Exception("We don't have such a suit\nCheck the sppelling/Casing.")
-        #Setting card Values
-        else:
-            try:
-                self.value = int(self.symbol)
-            except:
-                if self.symbol in CONSTANTS.FACE_CARDS_LIST:
-                        self.value = 10
-                elif self.symbol == "A":
-                    self.value = 11
+        self.value = CONSTANTS.VALUE_DICTIONARY[self.rank]
     #Name of the card
-    def __str__(self):
-        try:
-            return f"{int(self.symbol)} of {self.suit}"
-        except:
-            if self.symbol == "J":
-                return f"Jack of {self.suit}"
-            elif self.symbol == "Q":
-                return f"Queen of {self.suit}"
-            elif self.symbol == "K":
-                return f"King of {self.suit}"
-            elif self.symbol == "A":
-                return f"Ace of {self.suit}"
+    def __repr__(self):
+        return f"{self.rank} of {self.suit}"
 
+
+#Deck Class
+class Deck:
+    #Attributes
+    def __init__(self):
+        self.card_list = []
+        for suit in CONSTANTS.SUIT_LIST:
+            for rank in CONSTANTS.RANK_LIST:
+                self.card_list.append(Card(rank,suit))
 
 #Player Hand Class
 class PlayerHand:
-    pass
+    #Attributes
+    def __init__(self):
+        self.cards_in_hand = []
+    #Hit
+    def hit(self,new_card):
+        print("Hit!")
+        self.cards_in_hand.extend(new_card)
+    #Cards in hand
+    def __repr__(self):
+        return self.__str__()
+
 
 #Player Bet Class
 class PlayerBet:
-    pass
+    #Attributes
+    def __init__(self,money=100):
+        self.money = money
+        self.bet_amount = 0
+    #Bet
+    def bet(self):
+        self.wagered_money = print(functions.bet_input())
+        self.money -= self.wagered_money
+        self.bet_amount += self.wagered_money
+    #Money Remaining
+    def __repr__(self):
+        return f"{self.money} remaining.\n{self.bet_amount} in the bet area."
+
 
 #Player Class
-class Player:
-    pass
+class Player(PlayerHand,PlayerBet):
+    #Attributes
+    def __init__(self,name="Player"):
+        self.name = name
+    def options(self):
+        pass
+
 
 #Dealer Hand Class
 class DealerHand:
@@ -54,8 +68,4 @@ class DealerHand:
 
 #Dealer Class
 class Dealer:
-    pass
-
-#Deck Class
-class Deck:
     pass

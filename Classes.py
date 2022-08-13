@@ -1,3 +1,5 @@
+from base64 import standard_b64decode
+import random
 import CONSTANTS
 import functions
 
@@ -22,19 +24,38 @@ class Deck:
         for suit in CONSTANTS.SUIT_LIST:
             for rank in CONSTANTS.RANK_LIST:
                 self.card_list.append(Card(rank,suit))
+    #Shuffle
+    def shuffle(self):
+        random.shuffle(self.card_list)
+    #Deal One
+    def deal_one(self):
+        return self.card_list.pop()
+
 
 #Player Hand Class
 class PlayerHand:
     #Attributes
     def __init__(self):
         self.cards_in_hand = []
+        self.value = 0
+        for card in self.cards_in_hand:
+            self.value += card.value
+        self.status = "Hitting"
+        if self.value < 21:
+            self.status = "Bust"
+            stand()
     #Hit
     def hit(self,new_card):
         print("Hit!")
-        self.cards_in_hand.extend(new_card)
+        self.cards_in_hand.append(new_card)
+    #Stand
+    global stand
+    def stand(self):
+        self.status = "Standing"
     #Cards in hand
     def __repr__(self):
-        return self.__str__()
+        for card in self.cards_in_hand:
+            return card.__repr__()
 
 
 #Player Bet Class
@@ -58,8 +79,9 @@ class Player(PlayerHand,PlayerBet):
     #Attributes
     def __init__(self,name="Player"):
         self.name = name
+    #Option List
     def options(self):
-        pass
+        self.player_desired_option = input()
 
 
 #Dealer Hand Class

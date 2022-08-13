@@ -69,3 +69,10 @@ class DealerHand:
 #Dealer Class
 class Dealer:
     pass
+
+class DealerHand:
+    pass
+
+#Dealer Class
+class Dealer:
+    pass

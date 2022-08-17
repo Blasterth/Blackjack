@@ -1,7 +1,6 @@
 from base64 import standard_b64decode
 import random
 import CONSTANTS
-import functions
 
 
 #Card Class
@@ -66,9 +65,15 @@ class PlayerBet:
         self.bet_amount = 0
     #Bet
     def bet(self):
-        self.wagered_money = print(functions.bet_input())
-        self.money -= self.wagered_money
-        self.bet_amount += self.wagered_money
+        self.wager = 0
+        while True:
+            try:
+                self.wager = input("Please input the amount you would like to bet.")
+                if int(self.wager) <= self.money:
+                    self.bet_amount = int(self.wager)
+                    return f"You bet {self.bet_amount}."
+            except:
+                return "Try again."
     #Money Remaining
     def __repr__(self):
         return f"{self.money} remaining.\n{self.bet_amount} in the bet area."

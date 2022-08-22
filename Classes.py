@@ -31,32 +31,6 @@ class Deck:
         return self.card_list.pop()
 
 
-#Player Hand Class
-class PlayerHand:
-    #Attributes
-    def __init__(self):
-        self.cards_in_hand = []
-        self.value = 0
-        for card in self.cards_in_hand:
-            self.value += card.value
-        self.status = "Hitting"
-        if self.value < 21:
-            self.status = "Bust"
-            stand()
-    #Hit
-    def hit(self,new_card):
-        print("Hit!")
-        self.cards_in_hand.append(new_card)
-    #Stand
-    global stand
-    def stand(self):
-        self.status = "Standing"
-    #Cards in hand
-    def __repr__(self):
-        for card in self.cards_in_hand:
-            return card.__repr__()
-
-
 #Player Bet Class
 class PlayerBet:
     #Attributes
@@ -79,27 +53,49 @@ class PlayerBet:
         return f"{self.money} remaining.\n{self.bet_amount} in the bet area."
 
 
+#Player Hand Class
+class PlayerHand:
+    #Attributes
+    def __init__(self):
+        self.cards_in_hand = []
+        self.value = 0
+        for card in self.cards_in_hand:
+            self.value += card.value
+        self.status = "Hitting"
+        if self.value < 21:
+            self.status = "Bust"
+            stand()
+    #Hit
+    def hit(self,new_card):
+        print("Hit!")
+        self.cards_in_hand.append(new_card)
+        self.value += new_card.value
+    #Stand
+    global stand
+    def stand(self):
+        self.status = "Standing"
+    #Surrender
+    def surrender(self):
+        self.status = "Surrendered"
+    #Cards in hand
+    def __repr__(self):
+        for card in self.cards_in_hand:
+            return card.__repr__()
+
+
 #Player Class
 class Player(PlayerHand,PlayerBet):
     #Attributes
     def __init__(self,name="Player"):
         self.name = name
-    #Option List
-    def options(self):
-        self.player_desired_option = input()
 
 
 #Dealer Hand Class
-class DealerHand:
+class DealerHand(PlayerHand):
     pass
 
 #Dealer Class
-class Dealer:
-    pass
-
-class DealerHand:
-    pass
-
-#Dealer Class
-class Dealer:
-    pass
+class Dealer(DealerHand):
+    #Attributes
+    def __init__(self,name="Dealer"):
+        self.name = name

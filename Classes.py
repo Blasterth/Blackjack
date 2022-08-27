@@ -34,7 +34,7 @@ class Deck:
 #Player Bet Class
 class PlayerBet:
     #Attributes
-    def __init__(self,money=100):
+    def __init__(self,money):
         self.money = money
         self.bet_amount = 0
     #Bet
@@ -45,6 +45,7 @@ class PlayerBet:
                 self.wager = input("Please input the amount you would like to bet.")
                 if int(self.wager) <= self.money:
                     self.bet_amount = int(self.wager)
+                    self.money -= self.bet_amount
                     return f"You bet {self.bet_amount}."
             except:
                 return "Try again."
@@ -59,12 +60,10 @@ class PlayerHand:
     def __init__(self):
         self.cards_in_hand = []
         self.value = 0
-        for card in self.cards_in_hand:
-            self.value += card.value
         self.status = "Hitting"
         if self.value < 21:
             self.status = "Bust"
-            stand()
+            stand(self)
     #Hit
     def hit(self,new_card):
         print("Hit!")
@@ -87,15 +86,21 @@ class PlayerHand:
 class Player(PlayerHand,PlayerBet):
     #Attributes
     def __init__(self,name="Player"):
+        PlayerHand.__init__(self)
+        PlayerBet.__init__(self)
         self.name = name
 
 
 #Dealer Hand Class
 class DealerHand(PlayerHand):
-    pass
+    #Attributes
+    def __init__(self):
+        PlayerHand.__init__(self)
+
 
 #Dealer Class
 class Dealer(DealerHand):
     #Attributes
     def __init__(self,name="Dealer"):
+        DealerHand.__init__(self)
         self.name = name

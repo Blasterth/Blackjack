@@ -39,16 +39,21 @@ class PlayerBet:
         self.bet_amount = 0
     #Bet
     def bet(self):
-        self.wager = 0
-        while True:
-            try:
-                self.wager = input("Please input the amount you would like to bet.")
-                if int(self.wager) <= self.money:
-                    self.bet_amount = int(self.wager)
-                    self.money -= self.bet_amount
-                    return f"You bet {self.bet_amount}."
-            except:
-                return "Try again."
+        self.wager = input("Please input the amount you would like to wager.")
+        if len(self.wager) == 0:
+            print(CONSTANTS.EMPTY_INPUT_ERROR_MESSAGE)
+            self.bet()
+        elif self.wager.isnumeric() == True:
+            if int(self.wager) >= 1 and int(self.wager) <= self.money:
+                self.bet_amount == int(self.wager)
+                self.money -= int(self.wager)
+                print(f"You bet {self.wager}.")
+            else:
+                print(CONSTANTS.OUT_OF_RANGE_ERROR_MESSAGE)
+                self.bet()
+        else:
+            print(CONSTANTS.BAD_INPUT_ERROR_MESSAGE)
+            self.bet()
     #Money Remaining
     def __repr__(self):
         return f"{self.money} remaining.\n{self.bet_amount} in the bet area."
@@ -87,7 +92,7 @@ class Player(PlayerHand,PlayerBet):
     #Attributes
     def __init__(self,name="Player"):
         PlayerHand.__init__(self)
-        PlayerBet.__init__(self)
+        PlayerBet.__init__(self,100)
         self.name = name
 
 
@@ -104,3 +109,4 @@ class Dealer(DealerHand):
     def __init__(self,name="Dealer"):
         DealerHand.__init__(self)
         self.name = name
+        del self.surrender

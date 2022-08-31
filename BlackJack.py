@@ -53,7 +53,7 @@ while True:
     for card in range(2): new_player.hit(new_deck.deal_one())
 
     #Take the value of first 2 cards into account
-    #Note: From first Ace onwards the value of other ones is reduced to 1 (A Hard Hand)
+    #Note: From first Ace onward the value of other ones is reduced to 1 (A Hard Hand)
     if new_dealer.cards_in_hand[0].rank == "Ace" and new_dealer.cards_in_hand[1].rank == "Ace":
         new_dealer.cards_in_hand[1].value == 1
     for card in new_dealer.cards_in_hand:
@@ -63,6 +63,20 @@ while True:
     for card in new_player.cards_in_hand:
         new_player.value += card.value
 
-    #Player Round
-    print(f"Turn {turn}, {new_player.name}")
+    #Player Turn
     new_player.bet()
+    def new_player_turn():
+        new_player_input = input("Type:\nHit to get a card.\nStand to stop getting card.\nSurrender to ...")
+        if len(new_player_input) == 0:
+            print(CONSTANTS.EMPTY_INPUT_ERROR_MESSAGE)
+            new_player_turn()
+        elif new_player_input.lower() == "hit":
+            new_player.hit(new_deck.deal_one)
+            if new_player.cards_in_hand[-1].rank == "Ace" and new_player.value >= 11:
+                new_player.cards_in_hand[-1].value == 1
+            new_player.value += new_player.cards_in_hands[-1]
+            if new_player.value > 21:
+                print("You Bust!")
+                new_player.bet_amount = 0
+            else:
+                pass

@@ -1,4 +1,3 @@
-from base64 import standard_b64decode
 import random
 import CONSTANTS
 
@@ -34,8 +33,8 @@ class Deck:
 #Player Bet Class
 class PlayerBet:
     #Attributes
-    def __init__(self,money):
-        self.money = money
+    def __init__(self):
+        self.money = 0
         self.bet_amount = 0
     #Bet
     def bet(self):
@@ -45,7 +44,7 @@ class PlayerBet:
             self.bet()
         elif self.wager.isnumeric() == True:
             if int(self.wager) >= 1 and int(self.wager) <= self.money:
-                self.bet_amount == int(self.wager)
+                self.bet_amount = int(self.wager)
                 self.money -= int(self.wager)
                 print(f"You bet {self.wager}.")
             else:
@@ -54,9 +53,6 @@ class PlayerBet:
         else:
             print(CONSTANTS.BAD_INPUT_ERROR_MESSAGE)
             self.bet()
-    #Money Remaining
-    def __repr__(self):
-        return f"{self.money} remaining.\n{self.bet_amount} in the bet area."
 
 
 #Player Hand Class
@@ -65,22 +61,10 @@ class PlayerHand:
     def __init__(self):
         self.cards_in_hand = []
         self.value = 0
-        self.status = "Hitting"
-        if self.value < 21:
-            self.status = "Bust"
-            stand(self)
     #Hit
     def hit(self,new_card):
         print("Hit!")
         self.cards_in_hand.append(new_card)
-        self.value += new_card.value
-    #Stand
-    global stand
-    def stand(self):
-        self.status = "Standing"
-    #Surrender
-    def surrender(self):
-        self.status = "Surrendered"
     #Cards in hand
     def __repr__(self):
         for card in self.cards_in_hand:
@@ -90,10 +74,9 @@ class PlayerHand:
 #Player Class
 class Player(PlayerHand,PlayerBet):
     #Attributes
-    def __init__(self,name="Player"):
+    def __init__(self,):
         PlayerHand.__init__(self)
-        PlayerBet.__init__(self,100)
-        self.name = name
+        PlayerBet.__init__(self)
 
 
 #Dealer Hand Class
@@ -109,4 +92,3 @@ class Dealer(DealerHand):
     def __init__(self,name="Dealer"):
         DealerHand.__init__(self)
         self.name = name
-        del self.surrender
